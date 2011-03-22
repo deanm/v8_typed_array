@@ -1,0 +1,11 @@
+A V8 implementation of TypedArrays.  See:
+
+http://www.khronos.org/registry/typedarray/specs/latest/
+
+Should be mostly spec compliant, except for a few state cases, for example
+indexing on ArrayBuffer and DataView is a spec violation, but a conviencence of
+the current implementation.
+
+http://github.com/deanm/v8_typed_array
+
+Released under the BSD license.  (c) Dean McNamee <dean@gmail.com>, 2011.
