@@ -379,11 +379,13 @@ class TypedArray {
 
 class Int8Array : public TypedArray<1, v8::kExternalByteArray> { };
 class Uint8Array : public TypedArray<1, v8::kExternalUnsignedByteArray> { };
+class Uint8ClampedArray : public TypedArray<1, v8::kExternalPixelArray> { };
 class Int16Array : public TypedArray<2, v8::kExternalShortArray> { };
 class Uint16Array : public TypedArray<2, v8::kExternalUnsignedShortArray> { };
 class Int32Array : public TypedArray<4, v8::kExternalIntArray> { };
 class Uint32Array : public TypedArray<4, v8::kExternalUnsignedIntArray> { };
 class Float32Array : public TypedArray<4, v8::kExternalFloatArray> { };
+class Float64Array : public TypedArray<8, v8::kExternalDoubleArray> { };
 
 template <typename T>
 v8::Handle<v8::Value> cTypeToValue(T) {
@@ -728,6 +730,8 @@ void AttachBindings(v8::Handle<v8::Object> obj) {
            Int8Array::GetTemplate()->GetFunction());
   obj->Set(v8::String::New("Uint8Array"),
            Uint8Array::GetTemplate()->GetFunction());
+  obj->Set(v8::String::New("Uint8ClampedArray"),
+           Uint8ClampedArray::GetTemplate()->GetFunction());
   obj->Set(v8::String::New("Int16Array"),
            Int16Array::GetTemplate()->GetFunction());
   obj->Set(v8::String::New("Uint16Array"),
@@ -738,6 +742,8 @@ void AttachBindings(v8::Handle<v8::Object> obj) {
            Uint32Array::GetTemplate()->GetFunction());
   obj->Set(v8::String::New("Float32Array"),
            Float32Array::GetTemplate()->GetFunction());
+  obj->Set(v8::String::New("Float64Array"),
+           Float64Array::GetTemplate()->GetFunction());
   obj->Set(v8::String::New("DataView"),
            DataView::GetTemplate()->GetFunction());
 }
@@ -746,6 +752,7 @@ int SizeOfArrayElementForType(v8::ExternalArrayType type) {
   switch (type) {
     case v8::kExternalByteArray:
     case v8::kExternalUnsignedByteArray:
+    case v8::kExternalPixelArray:
       return 1;
     case v8::kExternalShortArray:
     case v8::kExternalUnsignedShortArray:
@@ -754,6 +761,8 @@ int SizeOfArrayElementForType(v8::ExternalArrayType type) {
     case v8::kExternalUnsignedIntArray:
     case v8::kExternalFloatArray:
       return 4;
+    case v8::kExternalDoubleArray:
+      return 8;
     default:
       return 0;
   }
